@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ui/mode-toggler";
 
 export default function Home() {
   return (
@@ -23,8 +24,8 @@ export default function Home() {
                 <li className="flex items-center">
                   <svg
                     className="h-6 w-6 flex-none fill-sky-100 stroke-sky-500 stroke-2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
                     <circle cx="12" cy="12" r="11" />
                     <path
@@ -43,8 +44,8 @@ export default function Home() {
                 <li className="flex items-center">
                   <svg
                     className="h-6 w-6 flex-none fill-sky-100 stroke-sky-500 stroke-2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
                     <circle cx="12" cy="12" r="11" />
                     <path
@@ -62,8 +63,8 @@ export default function Home() {
                 <li className="flex items-center">
                   <svg
                     className="h-6 w-6 flex-none fill-sky-100 stroke-sky-500 stroke-2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
                     <circle cx="12" cy="12" r="11" />
                     <path
@@ -78,12 +79,15 @@ export default function Home() {
                 Perfect for learning how the framework works, prototyping a new
                 idea, or creating a demo to share online.
               </p>
-              <Button
-                className="bg-blue-600 hover:bg-slate-500"
-                variant="destructive"
-              >
-                click me
-              </Button>
+              <div className="flex">
+                <Button
+                  className="bg-blue-600 hover:bg-slate-500 mr-2"
+                  variant="destructive"
+                >
+                  click me
+                </Button>
+                <ModeToggle />
+              </div>
             </div>
             <div className="pt-8 text-base font-semibold leading-7">
               <p className="text-gray-900">Want to dig deeper into Tailwind?</p>
