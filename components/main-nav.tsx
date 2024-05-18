@@ -25,7 +25,7 @@ export function MainNav() {
             pathname === "/docs" ? "text-foreground" : "text-foreground/60"
           )}
         >
-          Docs
+          problems
         </Link>
       </nav>
     </div>
