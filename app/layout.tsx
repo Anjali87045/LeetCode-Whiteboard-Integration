@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/ui/theme-provider"
@@ -6,6 +6,11 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 
 const inter = Inter({ subsets: ["latin"] })
+
+// type Props = {
+//   params: { : string }
+
+// }
 
 export const metadata: Metadata = {
   title: "LeetCode Board",
