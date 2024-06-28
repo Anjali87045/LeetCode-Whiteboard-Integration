@@ -1,37 +1,29 @@
 "use client"
-
+import dynamic from "next/dynamic"
 import { useParams } from "next/navigation"
-import { Metadata } from "next"
-import { Excalidraw, WelcomeScreen } from "@excalidraw/excalidraw"
-import ExcalidrawWrapper from "@/components/custom/excalidraw-wrapper"
-// import dynamic from "next/dynamic"
+import { useEffect } from "react"
 
-// export default function Page() {
-//   const params = useParams<{ ProblemID: string }>()
-
-//   console.log(params)
-
-//   return <></>
-// }
-
-// type Props = {
-//   params: { ProblemID: string }
-
-// }
-
-// async function generateMetadata({params}:Props) {
-
-//   const id=params.ProblemID
-//   title: "${id}. WHITEBOARD",
-//   description: "whiteboard for LeetCode problems",
-// }
+const ExcalidrawWrapper = dynamic(
+  async () =>
+    (await import("../../../components/custom/excalidraw-wrapper")).default,
+  {
+    ssr: false,
+  }
+)
 
 export default function page() {
+  const params = useParams<{ ProblemID: string }>()
+  const identifier = params.ProblemID
+
+  useEffect(() => {
+    document.title = params.ProblemID + "- whiteboard"
+  })
+
   return (
-    <>
-      <div className="w-screen h-[calc(14)]">
+    <main>
+      <div className="h-screen z-50">
         <ExcalidrawWrapper />
       </div>
-    </>
+    </main>
   )
 }
