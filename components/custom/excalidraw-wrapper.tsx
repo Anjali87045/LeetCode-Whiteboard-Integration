@@ -3,19 +3,30 @@ import {
   Excalidraw,
   MainMenu,
   WelcomeScreen,
+  getSceneVersion,
   serializeAsJSON,
 } from "@excalidraw/excalidraw"
 import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types"
 import { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types"
 
 const ExcalidrawWrapper: React.FC = () => {
+  let lastsceneVersion: number = -1
   const onchange = (
     elements: readonly ExcalidrawElement[],
     appState: AppState,
     files: BinaryFiles
-  ): void => {
-    const content: string = serializeAsJSON(elements, appState, files, "local")
-    localStorage.setItem("excalidraw", content)
+  ) => {
+    const sceneVersion: number = getSceneVersion(elements)
+    if (sceneVersion > lastsceneVersion) {
+      const content: string = serializeAsJSON(
+        elements,
+        appState,
+        files,
+        "local"
+      )
+      localStorage.setItem("excalidraw", content)
+      lastsceneVersion = sceneVersion
+    }
   }
 
   const retrieveinitialdata = () => {
@@ -37,6 +48,7 @@ const ExcalidrawWrapper: React.FC = () => {
           <MainMenu.DefaultItems.SaveToActiveFile />
           <MainMenu.DefaultItems.Export />
           <MainMenu.DefaultItems.ClearCanvas />
+          <MainMenu.DefaultItems.ToggleTheme />
         </MainMenu>
       </Excalidraw>
     </div>
