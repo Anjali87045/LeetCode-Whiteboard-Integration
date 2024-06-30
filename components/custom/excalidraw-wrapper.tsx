@@ -4,11 +4,12 @@ import {
   MainMenu,
   WelcomeScreen,
   getSceneVersion,
-  restoreAppState,
   serializeAsJSON,
 } from "@excalidraw/excalidraw"
 import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types"
 import { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types"
+import { doc, setDoc, getDoc } from "firebase/firestore/lite"
+import { db } from "@/lib/firebase/crud"
 
 interface ExcalidrawWrapperProps {
   identifier: string
@@ -25,22 +26,43 @@ const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   ) => {
     const sceneVersion = getSceneVersion(elements)
     if (sceneVersion > lastsceneVersion) {
-      const content = serializeAsJSON(elements, appState, files, "local")
-      localStorage.setItem("excalidraw" + "_" + identifier, content)
-      lastsceneVersion = sceneVersion
+      // const content = serializeAsJSON(elements, appState, files, "local")
+      // localStorage.setItem("excalidraw" + "_" + identifier, content)
+      // lastsceneVersion = sceneVersion
+
+      try {
+        const docRef = setDoc(
+          doc(db, "boards", "excalidraw" + "_" + identifier),
+          { content: serializeAsJSON(elements, appState, files, "database") }
+        )
+      } catch (error) {
+        console.error("got error", error)
+      }
     }
   }
 
-  const retrieveinitialdata = () => {
-    const content = localStorage.getItem("excalidraw" + "_" + identifier)
-    if (content != null) {
-      return JSON.parse(content)
-    }
-  }
+  const retrieveInitialDatafromFirestore = async () => {
+    try {
+      const docRef = doc(db, "boards", "excalidraw" + "_" + identifier)
+      const docSnap = await getDoc(docRef)
 
+      if (docSnap.exists()) {
+        return JSON.parse(docSnap.data().content)
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!")
+      }
+    } catch (error) {
+      console.error("cannot retrieve data ", error)
+    }
+    return null
+  }
   return (
     <div className="z-50 h-screen">
-      <Excalidraw onChange={onchange} initialData={retrieveinitialdata()}>
+      <Excalidraw
+        onChange={onchange}
+        initialData={retrieveInitialDatafromFirestore()}
+      >
         <WelcomeScreen>
           <WelcomeScreen.Hints.ToolbarHint />
           <WelcomeScreen.Hints.MenuHint />
