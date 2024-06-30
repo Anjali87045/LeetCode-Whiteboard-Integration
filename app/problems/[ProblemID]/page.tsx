@@ -16,13 +16,13 @@ export default function page() {
   const identifier = params.ProblemID
 
   useEffect(() => {
-    document.title = params.ProblemID + "- whiteboard"
+    document.title = identifier + "- whiteboard"
   })
 
   return (
     <main>
       <div className="h-screen z-50">
-        <ExcalidrawWrapper />
+        <ExcalidrawWrapper identifier={identifier} />
       </div>
     </main>
   )

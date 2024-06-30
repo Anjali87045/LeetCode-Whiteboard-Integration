@@ -4,33 +4,35 @@ import {
   MainMenu,
   WelcomeScreen,
   getSceneVersion,
+  restoreAppState,
   serializeAsJSON,
 } from "@excalidraw/excalidraw"
 import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types"
 import { AppState, BinaryFiles } from "@excalidraw/excalidraw/types/types"
 
-const ExcalidrawWrapper: React.FC = () => {
+interface ExcalidrawWrapperProps {
+  identifier: string
+}
+
+const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
+  identifier,
+}) => {
   let lastsceneVersion: number = -1
   const onchange = (
     elements: readonly ExcalidrawElement[],
     appState: AppState,
     files: BinaryFiles
   ) => {
-    const sceneVersion: number = getSceneVersion(elements)
+    const sceneVersion = getSceneVersion(elements)
     if (sceneVersion > lastsceneVersion) {
-      const content: string = serializeAsJSON(
-        elements,
-        appState,
-        files,
-        "local"
-      )
-      localStorage.setItem("excalidraw", content)
+      const content = serializeAsJSON(elements, appState, files, "local")
+      localStorage.setItem("excalidraw" + "_" + identifier, content)
       lastsceneVersion = sceneVersion
     }
   }
 
   const retrieveinitialdata = () => {
-    const content = localStorage.getItem("excalidraw")
+    const content = localStorage.getItem("excalidraw" + "_" + identifier)
     if (content != null) {
       return JSON.parse(content)
     }
