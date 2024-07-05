@@ -58,7 +58,7 @@ const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     return null
   }
   return (
-    <div className="z-50 h-screen">
+    <div className="z-50 h-[calc(100vh-10px)]">
       <Excalidraw
         onChange={onchange}
         initialData={retrieveInitialDatafromFirestore()}
