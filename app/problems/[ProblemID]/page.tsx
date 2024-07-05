@@ -11,7 +11,7 @@ const ExcalidrawWrapper = dynamic(
   }
 )
 
-export default function page() {
+export default function Page() {
   const params = useParams<{ ProblemID: string }>()
   const identifier = params.ProblemID
 
